@@ -10,7 +10,7 @@
   - [x] Deposit
   - [x] Withdraw
 
-
+<br/>
 
 ## ⛓ Classes
 ### Account Class
@@ -30,8 +30,7 @@ The class have the following member functions:
 - _**create_account()**_: Save card number as a key & pin, account type, balance information as a nested dictionary.
 - _**verify_account()**_: Verify the user and return the accounts linked to the card
 
-
-
+<br/>
 
 ### ATMController Class
 - This class takes the account instance from **Account class** and performs ATM tasks.
@@ -44,7 +43,7 @@ The class have the following member functions:
     - Withdraw
     - Deposit
 
-
+<br/>
 
 ## ⚒ Installation / 실행 방법
 **Mac OSX and Windows**: Python 3.6+ required
@@ -66,7 +65,7 @@ Instead, run the test file to provoke and test the ATM controller.
 
 ```python3 test_ATM.py -v```
 
-
+<br/>
 
 ## ➰ Project Duration / 프로젝트 기간
 March 2021
