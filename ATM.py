@@ -3,11 +3,11 @@ from collections import defaultdict
 
 # Enter Card number (Insert Card)
 # Enter PIN code
-# if correct, choose the menu from:
+# if correct, select the account.
+# Then choose the menu from:
 # 1. See balance
 # 2. Deposit
 # 3. Withdraw
-# If not correct, move to 1
 
 
 # verify the user and assist with the login part
@@ -18,8 +18,10 @@ class Account:
     def create_user(self, card_number, pin, acct_type, balance):
         # card number is the unique identifier
         self.account_list[card_number].append({"pin": pin, "accounts": {'account_type': acct_type, 'balance': balance}})
+        return True
 
-    # if card and pin matches, return list of accounts associated with that card no.
+
+    # Verify the user and find accounts linked to that card and return them
     def verify_user(self, card_number, pin):
         match_list = []
 
@@ -29,28 +31,28 @@ class Account:
 
             else:
                 return False
-
         return match_list
 
 
 class ATMController:
     def __init__(self, account):
         self.Account = account
-        # self.money = money
 
-    # retrieve accounts and pass it onto next
-    def select_account(self, acctlist, chosen_acct):
-        if acctlist != False:
-            print("User verified")
-
-            # if valid account, return the chosen account
-            for i in range(len(acctlist)):
-                if chosen_acct == acctlist[i]['account_type']:
-                    print(acctlist[i])
-                    return acctlist[i]
+    def insert_card(self, card_number, pin):
+        linked_account = self.Account.verify_user(card_number, pin)
+        if linked_account != False:
+            print("Account verified")
+            return linked_account
         else:
             print("Invalid Card or PIN")
 
+    # retrieve accounts and return selected account to next function
+    def select_account(self, linked_account, chosen_acct):
+        # if valid account, return the chosen account
+        for i in range(len(linked_account)):
+            if chosen_acct == linked_account[i]['account_type']:
+                print(linked_account[i])
+                return linked_account[i]
 
     def perform_tasks(self, chosen_acct, action, amount=0):
         if action == "See Balance":
@@ -62,31 +64,32 @@ class ATMController:
                 chosen_acct['balance'] += amount
                 print(chosen_acct['balance'])
             else:
-                print("Deposit amount must be bigger than zero")
+                raise RuntimeError("Deposit amount must be bigger than zero")
 
         elif action == "Withdraw":
             if 0 < amount <= chosen_acct['balance']:
                 chosen_acct['balance'] -= amount
                 print(chosen_acct['balance'])
             else:
-                print("Withdraw amount exceeds the balance in your account")
+                raise RuntimeError("Withdraw amount exceeds the balance in your account")
 
 
 if __name__ == '__main__':
-    bankaccount = Account()
+    test_account = Account()
+
     # one user mutliple acct
-    bankaccount.create_user(11112222, 1234, "credit", 10)
-    bankaccount.create_user(11112222, 1234, "savings", 140)
-    bankaccount.create_user(29200000, 1234, "credit", 90)
+    test_account.create_user(11112222, 1234, "credit", 100)
+    test_account.create_user(11112222, 1234, "savings", 1400)
+    test_account.create_user(29200000, 1111, "credit", 2500)
     # print(s.account_list)
 
-    acctlist = bankaccount.verify_user(11112222, 1234)
-    # print(acctlist)
-
     # choose account
-    atm = ATMController(bankaccount) # feed list of accounts
-    chosen_acct = atm.select_account(acctlist, "savings")
+    atm = ATMController(test_account) # feed list of accounts
+    # insert card method will return a list of accounts
+    linked_account = atm.insert_card(11112222,1234)
+    chosen_acct = atm.select_account(linked_account, "credit")
 
+    # perform task
     atm.perform_tasks(chosen_acct, "See Balance")
     atm.perform_tasks(chosen_acct, "Deposit", 100)
     atm.perform_tasks(chosen_acct, "Withdraw", 200)
