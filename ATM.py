@@ -10,7 +10,7 @@ class Account:
         self.account_list[card_number].append(
             {"pin": pin, "accounts": {'account_type': acct_type, 'balance': balance}})
 
-    # Verify the user and find accounts linked to that card and return a list of account
+    # Verify the user and return the accounts linked to the card
     def verify_account(self, card_number, pin):
         match_account_list = []
 
