@@ -12,7 +12,7 @@
 
 
 
-## Structure / 구조
+## ⛓ Classes
 ### Account Class
 - A class that holds account information, represented by a list of dictionaries.
 - It holds `card_number, pin, acct_type, balance` information.
@@ -49,22 +49,22 @@ The class have the following member functions:
 ## ⚒ Installation / 실행 방법
 **Mac OSX and Windows**: Python 3.6+ required
 
-### 1. Cloning the project / 프로젝트 파일 복사하기
+### 1. Cloning the project
 To clone the project directory, run:
 
-`git clone https://github.com/chaerim-kim/ATM-Controller.git`
+```git clone https://github.com/chaerim-kim/ATM-Controller.git```
 
 
-### 2. Running the ATM controller / ATM 파일 실행하기
+### 2. Running the ATM controller
 However, this **won't return anything** as it does not have a user interface. Based on this code, one should be able to implement the user interface!
 
-`python3 ATM.py`
+```python3 ATM.py```
 
 
-### 3. Running tests / 단위 테스트 실행하기
+### 3. Running tests
 Instead, run the test file to provoke and test the ATM controller.
 
-`python3 test_ATM.py -v`
+```python3 test_ATM.py -v```
 
 
 
