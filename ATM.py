@@ -1,3 +1,4 @@
+from collections import defaultdict
 
 # Enter Card number (Insert Card)
 # Enter PIN code
@@ -13,26 +14,28 @@
 class Account:
     def __init__(self):
         # list of accounts
-        self.account_list = {}
+        self.account_list = defaultdict(list)
 
     def create_user(self, card_number, pin, acct_type, balance):
         # card number is the unique identifier
-        self.account_list[card_number] = {"pin": pin, "accounts": {'account_type': acct_type, 'balance': balance}}
-
+        self.account_list[card_number].append({"pin": pin, "accounts": {'account_type': acct_type, 'balance': balance}})
 
     # if card and pin matches, return user object
     def verify_user(self, card_number, pin):
-        # return self.account_list[card_number]['accounts'] to the customer once the pin verifies
 
-        # self.account_list[card_number]['pin'] -> password
-        # but this only returns one sksdksfjkdsfj
-        for key, value in self.account_list.items():
-            if card_number == key and pin == value['pin']:
-                return True
-                # return self.account_list[card_number]['accounts']
+        match_list = []
+
+        # print(self.account_list[card_number][0]['pin'])
+        for i in range(len(self.account_list)):
+            if card_number in self.account_list.keys() and pin == self.account_list[card_number][i]['pin']:
+                # print(self.account_list[card_number][i]['accounts'])
+                match_list.append(self.account_list[card_number][i]['accounts'])
 
             else:
+                # print("Invalid Card or PIN")
                 return False
+
+        return match_list
 
 
 class ATMController:
@@ -40,14 +43,17 @@ class ATMController:
         self.Account = account
         # self.money = money
 
-
     # retrieve accounts and pass it onto next
-    def select_account(self, card_number, pin):
-        if self.Account.verify_user(card_number,pin) == True:
+    def select_account(self, acctlist):
+        if acctlist != False:
             print( "User verified")
-            return self.Account.verify_user(card_number,pin)
+            # if account in acctlist:
+
+
+            # return self.Account.verify_user(card_number,pin)
         else:
             print( "Invalid Card or PIN")
+
 
 
     # def see_balance(self):
@@ -73,13 +79,15 @@ class ATMController:
 
 if __name__ == '__main__':
     s = Account()
-    s.create_user(11112222, 1234, "savings", 140)
+    # one user mutliple acct
     s.create_user(11112222, 1234, "credit", 10)
-    # s.create_user(29200000, 1234, "credit", 90)
-
+    s.create_user(11112222, 1234, "savings", 140)
+    s.create_user(29200000, 1234, "credit", 90)
     # print(s.account_list)
-    # print(s.verify_user(11112222,1234))
+
+    acctlist = s.verify_user(11112222,1234)
+    print(acctlist)
 
     atm = ATMController(s)
-    atm.insert_and_verify(11112222,1234)
+    atm.select_account(acctlist)
 
